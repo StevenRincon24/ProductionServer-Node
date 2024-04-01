@@ -8,7 +8,7 @@ var { expressjwt: jwt } = require("express-jwt");
 const requireSignin = jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] })
 const registerController = async (req, res) => {
     try {
-        const { nombreMina, nitMina, emailMina, constrasenhiaMina, municipioMina, direccionMina, proyectoMina, tituloMina } = req.body;
+        const { nombreMina, nitMina, emailMina, constrasenhiaMina, municipioMina, direccionMina, proyectoMina, tituloMina, latitude, longitude } = req.body;
         // VALIDACION
         if (!nombreMina || !nitMina || !emailMina || !constrasenhiaMina || !municipioMina || !direccionMina || !proyectoMina || !tituloMina) {
             return res.status(400).send({
@@ -45,7 +45,9 @@ const registerController = async (req, res) => {
             municipioMina,
             direccionMina,
             proyectoMina,
-            tituloMina
+            tituloMina,
+            latitude,
+            longitude
         }).save()
         res.status(200).send({
             success: true,
