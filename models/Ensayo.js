@@ -14,6 +14,7 @@ const ensayoSchema = mongoose.Schema({
     porcentajeCaO: Number, /** Porcentaje Oxido de Calcio */
     porcentajeSiO2: Number, /** Porcentaje de Oxido de silicio */
     observacionMuestra: String,
+    laboratorioEncargado: String,
     minaEncargada: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',

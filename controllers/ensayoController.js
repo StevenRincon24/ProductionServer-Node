@@ -15,10 +15,10 @@ const createEnsayoController = async (req, res) => {
 
         // Iterar sobre cada objeto de ensayo
         for (const ensayoData of ensayosData) {
-            const { informacionInternaEnsayo, informacionExternaEnsayo, fechaMuestreo, informacionGeoespacionX, informacionGeoespacionY, informacionGeoespacionZ, fechaAnalisis, fechaRecepcion, fechaEntregaResultados, porcentajeCH4, porcentajeCaO, porcentajeSiO2, observacionMuestra } = ensayoData;
+            const { informacionInternaEnsayo, informacionExternaEnsayo, fechaMuestreo, informacionGeoespacionX, informacionGeoespacionY, informacionGeoespacionZ, fechaAnalisis, fechaRecepcion, fechaEntregaResultados, porcentajeCH4, porcentajeCaO, porcentajeSiO2, observacionMuestra, laboratorioEncargado } = ensayoData;
 
             // Verificar si faltan datos
-            if (!fechaMuestreo || !informacionGeoespacionX || !informacionGeoespacionY || !informacionGeoespacionZ || !fechaAnalisis || !fechaRecepcion || !fechaEntregaResultados || !porcentajeCH4 || !porcentajeCaO || !porcentajeSiO2) {
+            if (!fechaMuestreo || !informacionGeoespacionX || !informacionGeoespacionY || !informacionGeoespacionZ || !fechaAnalisis || !fechaRecepcion || !fechaEntregaResultados || !porcentajeCH4 || !porcentajeCaO || !porcentajeSiO2 || !laboratorioEncargado) {
                 return res.status(500).send({
                     success: false,
                     message: 'Faltan datos en uno de los ensayos'
@@ -26,7 +26,23 @@ const createEnsayoController = async (req, res) => {
             }
 
             // Crear el ensayo y guardarlo en la base de datos
-            const ensayo = await Ensayo({ informacionInternaEnsayo, informacionExternaEnsayo, fechaMuestreo, informacionGeoespacionX, informacionGeoespacionY, informacionGeoespacionZ, fechaAnalisis, fechaRecepcion, fechaEntregaResultados, observacionMuestra, porcentajeCH4, porcentajeCaO, porcentajeSiO2, minaEncargada: req.auth._id }).save();
+            const ensayo = await Ensayo({
+                informacionInternaEnsayo,
+                informacionExternaEnsayo,
+                fechaMuestreo,
+                informacionGeoespacionX,
+                informacionGeoespacionY,
+                informacionGeoespacionZ,
+                fechaAnalisis,
+                fechaRecepcion,
+                fechaEntregaResultados,
+                porcentajeCH4,
+                porcentajeCaO,
+                porcentajeSiO2,
+                observacionMuestra,
+                laboratorioEncargado,
+                minaEncargada: req.auth._id
+            }).save();
 
             ensayosCreados.push(ensayo); // Agregar el ensayo creado al array de ensayos creados
         }
