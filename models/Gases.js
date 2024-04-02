@@ -2,12 +2,13 @@ const mongoose = require('mongoose')
 
 const polvoCarbon = mongoose.Schema({
     frenteTrabajo: String,
-    porcentajeOxigeno: String,
-    porcentajeMonoxidoCarbon: String,
-    porcentajeDioxidoCarbono: String,
-    porcentajeMetano: String,
-    porcentajeAcidoSulfhidrico: String,
-    gasesNitrosos: String,
+    porcentajeOxigeno: Number,
+    porcentajeMonoxidoCarbon: Number,
+    porcentajeDioxidoCarbono: Number,
+    porcentajeMetano: Number,
+    porcentajeAcidoSulfhidrico: Number,
+    gasesNitrosos: Number,
+    porcentajeOxigenoNitrogeno: Number,
     mina: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',

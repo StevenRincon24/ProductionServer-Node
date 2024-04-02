@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
 const concentracionPolvoCarbon = mongoose.Schema({
-    masaPolvoCarbonRecolectado: String,
-    areaGaleria: String,
-    longitudEstacion: String,
-    concentracionPolvoCarbon: String,
+    masaPolvoCarbonRecolectado: Number,
+    areaGaleria: Number,
+    longitudEstacion: Number,
+    concentracionPolvoCarbon: Number,
     mina: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',

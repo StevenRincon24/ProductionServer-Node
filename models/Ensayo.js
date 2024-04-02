@@ -10,9 +10,9 @@ const ensayoSchema = mongoose.Schema({
     fechaAnalisis: Date,
     fechaRecepcion: Date,
     fechaEntregaResultados: Date,
-    porcentajeCH4: String, /** Porcentaje de Metano */
-    porcentajeCaO: String, /** Porcentaje Oxido de Calcio */
-    porcentajeSiO2: String, /** Porcentaje de Oxido de silicio */
+    porcentajeCH4: Number, /** Porcentaje de Metano */
+    porcentajeCaO: Number, /** Porcentaje Oxido de Calcio */
+    porcentajeSiO2: Number, /** Porcentaje de Oxido de silicio */
     observacionMuestra: String,
     minaEncargada: {
         type: mongoose.Schema.Types.ObjectId,

@@ -12,15 +12,25 @@ const registroGases = async (req, res) => {
 
         // Iterar sobre cada objeto de ensayo
         for (const gasData of gasesData) {
-            const { frenteTrabajo, porcentajeOxigeno, porcentajeMonoxidoCarbon, porcentajeDioxidoCarbono, porcentajeMetano, porcentajeAcidoSulfhidrico, gasesNitrosos } = gasData;
-            if (!frenteTrabajo || !porcentajeOxigeno || !porcentajeMonoxidoCarbon || !porcentajeDioxidoCarbono || !porcentajeMetano || !porcentajeAcidoSulfhidrico || !gasesNitrosos) {
+            const { frenteTrabajo, porcentajeOxigeno, porcentajeMonoxidoCarbon, porcentajeDioxidoCarbono, porcentajeMetano, porcentajeAcidoSulfhidrico, gasesNitrosos, porcentajeOxigenoNitrogeno } = gasData;
+            if (!frenteTrabajo || !porcentajeOxigeno || !porcentajeMonoxidoCarbon || !porcentajeDioxidoCarbono || !porcentajeMetano || !porcentajeAcidoSulfhidrico || !gasesNitrosos || !porcentajeOxigenoNitrogeno) {
                 return res.status(500).send({
                     success: false,
                     message: 'Faltan datos en uno de los registros'
                 })
             }
 
-            const gases = await modeloGases({ frenteTrabajo, porcentajeOxigeno, porcentajeMonoxidoCarbon, porcentajeDioxidoCarbono, porcentajeMetano, porcentajeAcidoSulfhidrico, gasesNitrosos, mina: req.auth._id }).save();
+            const gases = await modeloGases({
+                frenteTrabajo,
+                porcentajeOxigeno,
+                porcentajeMonoxidoCarbon,
+                porcentajeDioxidoCarbono,
+                porcentajeMetano,
+                porcentajeAcidoSulfhidrico,
+                gasesNitrosos,
+                porcentajeOxigenoNitrogeno,
+                mina: req.auth._id
+            }).save();
             gasesCreados.push(gases); // Agregar el ensayo creado al array de ensayos creados
         }
         res.status(200).send({

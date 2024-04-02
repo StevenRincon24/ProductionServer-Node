@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 const polvoCarbon = mongoose.Schema({
-    masaPolvoCarbon: String,
-    porcentajePolvoInerte: String,
-    masaPolvoInerte: String,
+    masaPolvoCarbon: Number,
+    porcentajePolvoInerte: Number,
+    masaPolvoInerte: Number,
     mina: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
