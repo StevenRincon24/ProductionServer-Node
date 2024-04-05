@@ -1,7 +1,9 @@
 const JST = require('jsonwebtoken')
-const { hashPassword, comparePassword } = require('../helpers/authHelper');
+const { hashPassword, comparePassword, generateRandomPassword } = require('../helpers/authHelper');
 const userMina = require('../models/userModel')
 var { expressjwt: jwt } = require("express-jwt");
+const nodemailer = require('nodemailer');
+
 // REGISTRO
 
 // MIDDLEWARE
@@ -18,7 +20,7 @@ const registerController = async (req, res) => {
         }
 
         // EXISTE MINA
-        const existeMina = await (userMina.findOne({ nitMina }) )
+        const existeMina = await (userMina.findOne({ nitMina }))
         if (existeMina) {
             return res.status(500).send({
                 success: false,
@@ -165,9 +167,78 @@ const updateUserController = async (req, res) => {
     }
 }
 
+
+const resetPasswordController = async (req, res) => {
+    try {
+        const { nitMina } = req.body;
+
+        if (!nitMina) {
+            return res.status(400).send({
+                success: false,
+                message: "Falta el NIT de la mina en la solicitud."
+            });
+        }
+
+        const mina = await userMina.findOne({ nitMina });
+
+        if (!mina) {
+            return res.status(404).send({
+                success: false,
+                message: "No se encontró ninguna mina con el NIT proporcionado."
+            });
+        }
+
+        const newPassword = generateRandomPassword();
+
+        const hashedPassword = await hashPassword(newPassword);
+
+        mina.constrasenhiaMina = hashedPassword;
+        await mina.save();
+
+        const transporter = nodemailer.createTransport({
+            service: 'outlook',
+            auth: {
+                user: 'minaguard@outlook.com',
+                pass: 'Mina_Guard0504'
+            }
+        });
+
+        const mailOptions = {
+            from: 'minaguard@outlook.com',
+            to: mina.emailMina,
+            subject: 'Nueva Contraseña MinaGuard',
+            text: `Se ha restablecido su contraseña para el ingreso a la aplicación MinaGuard. Su nueva contraseña es: ${newPassword}` // Cuerpo del correo electrónico
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({
+                    success: false,
+                    message: "Error al enviar el correo electrónico con la nueva contraseña."
+                });
+            } else {
+                console.log('Correo electrónico enviado: ' + info.response);
+                return res.status(200).send({
+                    success: true,
+                    message: "Se ha enviado un correo electrónico con la nueva contraseña."
+                });
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({
+            success: false,
+            message: "Error al restablecer la contraseña de la mina."
+        });
+    }
+};
+
+
 module.exports = {
     registerController,
     loginController,
     updateUserController,
+    resetPasswordController,
     requireSignin
 }

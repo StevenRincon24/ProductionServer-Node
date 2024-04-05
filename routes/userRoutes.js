@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerController, loginController, updateUserController, requireSignin } = require('../controllers/userController');
+const { registerController, loginController, updateUserController, requireSignin, resetPasswordController } = require('../controllers/userController');
 
 // ROUTES OBJETO
 
@@ -15,6 +15,8 @@ router.post('/login', loginController)
 
 // UPDATE || PUT
 router.put('/updateUser', requireSignin, updateUserController)
+
+router.put('/reset-password', resetPasswordController);
 
 
 // Exportar
